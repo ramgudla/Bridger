@@ -41,19 +41,20 @@ prepareBatchFile() {
     #remote_files=sftp -q "$user@$server:$remote_folder" <<<"ls" | tail -n+2
     #remote_files=$(sftp -q \"$user@$server:$remote_folder\" <<<\"ls\" | grep -v '^sftp>')
     #remote_files=$(cat $listfile | grep -v '^sftp>')
-    remote_files=`echo 'ls' | sftp -i id_rsa $user@$server:$remote_folder | grep -v '^sftp>'`
+    remote_files=`echo 'ls' | sftp -i id_rsa -q $user@$server:$remote_folder | grep -v '^sftp>'`
+    echo $remote_files
     for i in $remote_files
     do
       remote_file=$remote_folder$i
       # Place the command to upload files in sftp batch file
       if [[ "$remote_file" == *"$DIRECTOR_FILE_PREFIX"* ]]; then
         #get $remote_file $LOCAL_DIRECTOR_DIR+$i
-        echo "get \"$remote_file\" \"$LOCAL_DIRECTOR_DIR+$i\"" >> $tempfile
-        echo "mv \"$remote_file\" \"$REMOTE_DIRECTOR_ARCHIVE_DIR\"" >> $tempfile
+        echo "get \"$remote_file\" \"$LOCAL_DIRECTOR_DIR$i\"" >> $tempfile
+        echo "rename \"$remote_file\" \"$REMOTE_DIRECTOR_ARCHIVE_DIR$i\"" >> $tempfile
       elif [[ "$remote_file" == *"$VENDOR_FILE_PREFIX"* ]]; then
         #get $remote_file $LOCAL_VENDOR_DIR+$i
-        echo "get \"$remote_file\" \"$LOCAL_VENDOR_DIR+$i\"" >> $tempfile
-        echo "mv \"$remote_file\" \"$REMOTE_VENDOR_ARCHIVE_DIR\"" >> $tempfile
+        echo "get \"$remote_file\" \"$LOCAL_VENDOR_DIR$i\"" >> $tempfile
+        echo "rename \"$remote_file\" \"$REMOTE_VENDOR_ARCHIVE_DIR$i\"" >> $tempfile
       else
         echo "$remote_file is neither Director's nor Suppliers's. This file will be ignored and archived."
         ignored=$(( $ignored + 1 ))
@@ -130,11 +131,17 @@ LOCAL_VENDOR_DIR='/home/citibank/bridger/in/vendor/'
 REMOTE_VENDOR_DIR='/BridgerStagingOut/AirtelVendorAutobatch/'
 
 # Archive files will be moved to this dir
-REMOTE_DIRECTOR_ARCHIVE_DIR=$REMOTE_DIRECTOR_DIR'archive'
-REMOTE_VENDOR_ARCHIVE_DIR=$REMOTE_VENDOR_DIR'archive'
+REMOTE_DIRECTOR_ARCHIVE_DIR=$REMOTE_DIRECTOR_DIR'archive/'
+REMOTE_VENDOR_ARCHIVE_DIR=$REMOTE_VENDOR_DIR'archive/'
 
 # Private key file path
 KEY_FILE_PATH="/home/citibank/bridger/id_rsa"
+
+### test ###
+#LOCAL_DIRECTOR_DIR='/Users/ramgudla/Desktop/Bugs/sftptest/tmp/'
+#LOCAL_VENDOR_DIR='/Users/ramgudla/Desktop/Bugs/sftptest/tmp/'
+#KEY_FILE_PATH="/Users/ramgudla/Desktop/Bugs/sftptest/id_rsa"
+### test ###
 
 prepareBatchFile $REMOTE_DIRECTOR_DIR $REMOTE_VENDOR_DIR
 
