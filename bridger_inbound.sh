@@ -137,11 +137,11 @@ REMOTE_VENDOR_ARCHIVE_DIR=$REMOTE_VENDOR_DIR'archive/'
 # Private key file path
 KEY_FILE_PATH="/home/citibank/bridger/id_rsa"
 
-### test ###
+###################### Testing #################################
 #LOCAL_DIRECTOR_DIR='/Users/ramgudla/Desktop/Bugs/sftptest/tmp/'
 #LOCAL_VENDOR_DIR='/Users/ramgudla/Desktop/Bugs/sftptest/tmp/'
 #KEY_FILE_PATH="/Users/ramgudla/Desktop/Bugs/sftptest/id_rsa"
-### test ###
+###################### Testing #################################
 
 prepareBatchFile $REMOTE_DIRECTOR_DIR $REMOTE_VENDOR_DIR
 
