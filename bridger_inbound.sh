@@ -35,24 +35,16 @@
 prepareBatchFile() {
   for remote_folder in "$@"
   do
-    #for i in `cat mylist.txt`
-    #remote_files=`echo 'ls' | sftp -i id_rsa -oPort=5032 ramakrishna.rao.gudla@oracle.com@130.35.17.133 | grep -v '^sftp>'`
-    #echo ‘ls’ | sftp -i id_rsa -oPort=5032 "$user@$server:$remote_folder" > $listfile
-    #remote_files=sftp -q "$user@$server:$remote_folder" <<<"ls" | tail -n+2
-    #remote_files=$(sftp -q \"$user@$server:$remote_folder\" <<<\"ls\" | grep -v '^sftp>')
-    #remote_files=$(cat $listfile | grep -v '^sftp>')
-    remote_files=`echo 'ls' | sftp -i id_rsa -q $user@$server:$remote_folder | grep -v '^sftp>'`
+    remote_files=`echo 'ls *.*' | sftp -i id_rsa -q $user@$server:$remote_folder | grep -v '^sftp>'`
     echo $remote_files
     for i in $remote_files
     do
       remote_file=$remote_folder$i
       # Place the command to upload files in sftp batch file
       if [[ "$remote_file" == *"$DIRECTOR_FILE_PREFIX"* ]]; then
-        #get $remote_file $LOCAL_DIRECTOR_DIR+$i
         echo "get \"$remote_file\" \"$LOCAL_DIRECTOR_DIR$i\"" >> $tempfile
         echo "rename \"$remote_file\" \"$REMOTE_DIRECTOR_ARCHIVE_DIR$i\"" >> $tempfile
       elif [[ "$remote_file" == *"$VENDOR_FILE_PREFIX"* ]]; then
-        #get $remote_file $LOCAL_VENDOR_DIR+$i
         echo "get \"$remote_file\" \"$LOCAL_VENDOR_DIR$i\"" >> $tempfile
         echo "rename \"$remote_file\" \"$REMOTE_VENDOR_ARCHIVE_DIR$i\"" >> $tempfile
       else
