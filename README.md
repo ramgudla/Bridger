@@ -11,15 +11,13 @@ On DMZ server:\
   $ cd /home/citibank/bridger\
   $ unzip bridger.zip\
   $ unzip keys.zip
+  $ chmod 400 id_rsa
 
 3. Outbound and Inbound cron jobs:\
   $ crontab -e\
   */5 * * * * /home/citibank/bridger/bridger_outbound.sh BhAiInNeKeTEST 69.84.186.61 >> /home/citibank/bridger/logs/bridger_outbound.log 2>&1\
   */5 * * * * /home/citibank/bridger/bridger_inbound.sh BhAiInNeKeTESTOut 69.84.186.61 >> /home/citibank/bridger/logs/bridger_inbound.log 2>&1\
-
-  Check the log files. If you get Permissions XXXX for 'id_rsa' are too open, then run the following command:\
-  $ chmod 400 id_rsa
-
+  
 4. Log Rotate cron jobs:\
   $ crontab -e\
   0 2 * * * /usr/sbin/logrotate /home/citibank/bridger/bridger_outbound.conf\
