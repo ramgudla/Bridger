@@ -14,14 +14,14 @@ On DMZ server:\
   $ chmod 400 id_rsa
 
 3. Outbound and Inbound cron jobs:\
-  $ crontab -e\
+  $ crontab -e
   ```
   */5 * * * * /home/citibank/bridger/bridger_outbound.sh BhAiInNeKeTEST 69.84.186.61 >> /home/citibank/bridger/logs/bridger_outbound.log 2>&1\
   */5 * * * * /home/citibank/bridger/bridger_inbound.sh BhAiInNeKeTESTOut 69.84.186.61 >> /home/citibank/bridger/logs/bridger_inbound.log 2>&1\
   ```
   
 4. Log Rotate cron jobs:\
-  $ crontab -e\
+  $ crontab -e
   ```
   0 2 * * * /usr/sbin/logrotate /home/citibank/bridger/bridger_outbound.conf\
   0 2 * * * /usr/sbin/logrotate /home/citibank/bridger/bridger_inbound.conf\
