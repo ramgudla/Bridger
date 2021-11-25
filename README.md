@@ -10,7 +10,7 @@ On DMZ server:\
 2. Extract zip file:\
   $ cd /home/citibank/bridger\
   $ unzip bridger.zip\
-  $ unzip keys.zip
+  $ unzip keys.zip\
   $ chmod 400 id_rsa
 
 3. Outbound and Inbound cron jobs:\
